@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 const cors = require('cors');
 const mongoose = require('mongoose');
-const { getPropertyDetails, addPropertyType, getPropertyType, getPropertyTypeById, updatePropertyType, deletePropertyType } = require('./Handlers/propertyDetailsHandle');
+const { getPropertyDetails, addPropertyType, getPropertyType, getPropertyTypeById, updatePropertyType, deletePropertyType, addPropertyDetails } = require('./Handlers/propertyDetailsHandle');
 
 app.use(express.json());
 
@@ -17,7 +17,11 @@ app.use(cors());
 
 app.get('/propertyDetails',async (req, res) => {
     let PropertyDetails = await getPropertyDetails();
-    res.send(PropertyDetails);
+    var resData = {};
+    resData["message"] = "";
+    resData["data"] = PropertyDetails;
+    resData["result"] = true;
+    res.send(resData);
 });
 
 app.get('/propertyType',async (req, res) => {
@@ -42,7 +46,14 @@ app.delete('/propertyType/:id',async (req, res) => {
 
 app.post('/propertyType',async (req, res) => {
     let PropertyType = await addPropertyType(req.body);
-    //res.send(PropertyType);
+    res.send(PropertyType);
+});
+
+app.post('/propertyDetails',async (req, res) => {
+    console.log(22222222);
+    console.log(req.body);
+    let PropertyDetails = await addPropertyDetails(req.body);
+    res.send(PropertyDetails);
 });
 
 async function connectDb() {
@@ -50,8 +61,6 @@ async function connectDb() {
 }
 
 connectDb().catch(err => console.log(err));
-
-
 
 app.listen(port, () => {
     console.log('Server is running on http://localhost:'+port);

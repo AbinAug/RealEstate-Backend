@@ -3,8 +3,6 @@ const PropertyType =  require('../Db/PropertyType');
 
 async function getPropertyDetails(){
   const propertydetails = await PropertyDetails.find();
-  console.log(111111111111);
-  console.log(propertydetails);
   return propertydetails.map(x => x.toObject());
 }
 
@@ -36,4 +34,14 @@ async function addPropertyType(PropertyTypeModel){
     return propertytype.toObject();
   }
 
-module.exports = {deletePropertyType , updatePropertyType ,getPropertyTypeById , getPropertyType , addPropertyType ,getPropertyDetails};
+  async function addPropertyDetails(PropertyDetailsModel){
+    console.log(7777777777);
+    console.log(PropertyDetailsModel);
+    let propertydetails = new PropertyDetails({
+        ...PropertyDetailsModel
+    });
+    await propertydetails.save();
+    return propertydetails;
+  }
+
+module.exports = {addPropertyDetails,deletePropertyType , updatePropertyType ,getPropertyTypeById , getPropertyType , addPropertyType ,getPropertyDetails};
